@@ -1,0 +1,145 @@
+
+---Chat Bot Functional Requirements---
+
+============================================================
+On startup, you application must identify itself by name        
+and welcome the customer to your Restaurant ordering service  
+------------------------------------------------------------
+e.g.  Hi, my name is Anh. ,Welcome to VietnamBot.
+      We offer a wide range of vietnamese food for you to
+      eat.
+------------------------------------------------------------
+============================================================
+
+
+
+
+
+
+============================================================
+You must be able to identify each customer by asking their 
+name.
+------------------------------------------------------------
+e.g. "Before we start, can I take your name?"
+      "Hi. Thank you. My name is Jim."
+
+If they have ordered previously, then by name,
+    -Welcome them back
+
+e.g. "I can see you have ordered with us before.  Welcome back Jim."
+
+Otherwise
+    -Say it is their first time
+
+e.g. "I can see this is your first time ordering with us.
+Welcome to VietnamBot, Jim"
+------------------------------------------------------------
+============================================================
+
+
+
+
+
+
+============================================================
+You must be able to store orders for a particular 
+customer name – using order numbers to differentiate
+between each order the customer made
+
+The customer is allowed to do following things
+
+    -Order food
+    -View previous orders
+    -See the menu
+    -Exit the system
+
+------------------------------------------------------------
+e.g. "OK Jim.  Would you like to Order some food, see your
+previous orders, see the menu or would you like to Leave?"
+"I would like to see the menu"
+"I want to order some food"
+"I would like to see my previous orders"
+"I have decided I want to Leave"
+------------------------------------------------------------
+============================================================
+
+
+
+
+
+
+============================================================
+You must be able to allow the customer to access their previous
+orders, including
+    -Order number
+    -the dishes ordered and their prices
+    -Total order value
+============================================================
+
+
+
+
+
+
+============================================================
+You must be able to allow the customer to request a 
+description of the menus for 3 different courses
+– e.g. start, main and dessert
+    -They may see the dishes for one course only or for all
+     courses
+    -You must include a price for each dish in that course
+============================================================
+
+
+
+
+
+
+============================================================
+You must be able to allow the customer to order food from 
+each of the courses
+
+------------------------------------------------------------
+Note: Each order must have a minimum number of 3 dishes in 
+order to proceed to completion.
+
+
+If less than 3 dishes ordered, then the order will not be saved
+They may leave ordering at any time and abandon the order 
+– please confirm they really want to do this.
+
+If 3 or more dishes ordered,
+They may continue ordering or finish ordering
+------------------------------------------------------------
+============================================================
+
+
+
+
+
+
+============================================================
+During the order process, the customer should be able to 
+request to access the menu again or abandon the order.
+============================================================
+
+
+
+
+
+
+============================================================
+On completion of ordering,
+  you must summarise the order when they have completed ordering
+    -What dishes they ordered and the price
+    -Total order cost
+    -Order number
+  and then ask them for confirmation to proceed to store order
+    -Once confirmed to go ahead to complete the order, the order
+     is to be saved to the customer account
+        -Order number
+        -Dishes and Prices
+        -Total cost
+============================================================
+
+
