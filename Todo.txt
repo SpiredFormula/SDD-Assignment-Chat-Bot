@@ -1,5 +1,7 @@
+# possible bug fix get check out of gor loop
 
----Chat Bot Functional Requirements---
+
+---- Chat Bot Functional Requirements ----
 
 ============================================================
 On startup, you application must identify itself by name        
@@ -130,7 +132,7 @@ request to access the menu again or abandon the order.
 
 ============================================================
 On completion of ordering,
-  you must summarise the order when they have completed ordering
+  you must summarize the order when they have completed ordering
     -What dishes they ordered and the price
     -Total order cost
     -Order number
