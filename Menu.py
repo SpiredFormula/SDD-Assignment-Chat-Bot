@@ -4,28 +4,24 @@ import json
 
 class Menu:
 
-
     def __init__(self):
-        
+
         self.loadMenu()
         self.waiter = Avatar()
 
     def loadMenu(self):
         try:
-            with open("Menu.json") as m:
+            with open("Json\Menu.json") as m:
                 data = m.read()
                 self.menu = json.loads(data)
-                
+
         except:
             self.menu = {"snack": {"popcorn": 5.00}}
             print(self.menu)
 
-
-
     def showCourse(self, course):
         print(f"Course: {course.title()} test")
         self.waiter.say(f"The dishes for the {course} course are.")
-
 
     def showDishes(self, course):
 
@@ -38,11 +34,9 @@ class Menu:
             print(desc)
             self.waiter.say(desc)
 
-
     def showMenu(self, menuCourse=None):
         print("---- Menu ----")
         self.waiter.say("The following is the Menu")
-
 
         if menuCourse:
             self.showCourse(menuCourse)

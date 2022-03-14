@@ -5,101 +5,79 @@ from Avatar import Avatar
 import json
 from fuzzywuzzy import process
 import spacy
-from GetName import GET_NAME
+from Customer import CustomerClass
 
 
 # defining the class
 class Chat_Bot:
     def __init__(self):
         self.waiter = Avatar()
-        self.name = GET_NAME()
-        self.loadPeople()
-
-    # Gets the list of previous customers
-
-    def loadPeople(self):
-        try:
-            with open("People.json") as p:
-                data = p.read()
-                self.people = json.loads(data)
-                self.peopleName = list(self.people.keys())
-
-                print(self.peopleName)
-        # Print's out a error message if it is unable to find the json file
-        except:
-            print("unable to find json file")
-            y = input("Try again? y/n: ").lower()
-            if y == "y":
-                self.loadPeople()
+        self.Customer = CustomerClass()
+        self.previouscustomers = self.Customer.loadPeople()
 
     # Greets the user
     def greet(self):
-        self.waiter.say(
-            f"Hello my name is {self.waiter.name} and I'll be serving you today")
         print(
             f"Hello my name is {self.waiter.name} and I'll be serving you today")
-        self.takeName("Before we start, can I take your name? ")
+        self.waiter.say(
+            f"Hello my name is {self.waiter.name} and I'll be serving you today")
 
-    # Takes the name of the user
-    def takeName(self, ask):
-        words = self.waiter.listen(ask)
-        name = self.name.getName(words)
-        name = name.lower()
-        print(name)
-        results = process.extract(words, self.peopleName)
-        print(results)
+        self.orderHistory("Before we start may i take your name?")
 
-        for (match, confidence) in results:
-            # If they have ordered before
-            if confidence >= 60:
-                self.waiter.say(
-                    f"I can see you have ordered with us before.  Welcome back {name}")
-                print(
-                    f"I can see you have ordered with us before.  Welcome back {name}")
-                self.actions()
+    # This function will check to see if the user had ordered before
+    def orderHistory(self, ask):
+        self.customerName = self.Customer.askName(
+            ask)
+        # if they have ordered before
+        if self.customerName in self.previouscustomers:
+            print(
+                f"I can see you have ordered with us before.  Welcome back {self.customerName}")
+            self.waiter.say(
+                f"I can see you have ordered with us before.  Welcome back {self.customerName}")
+            self.orderedBefore = True
+            self.actions()
+        # if it can not undersand the user
+        if self.customerName == False:
+            print("Let's try that again.  What is your name? ")
+            self.orderHistory("let's try that again What is Your name")
+        # if it is their first time
+        else:
+            print(
+                f"I can see this is your first time ordering with us. welcome {self.customerName}")
+            self.waiter.say(
+                f"I can see this is your first time ordering with us. welcome {self.customerName}")
+            self.actions()
+            self.orderedBefore = False
 
-            # If the user has not ordered before
-            if confidence < 60:
-                self.waiter.say(
-                    f"I can see this is your first time ordering with us. Welcome to VietnamBot, {name}")
-                print(
-                    f"I can see this is your first time ordering with us. Welcome to VietnamBot, {name}")
-                self.actions()
-
-        # If it could not understand what the user said ask again
-        if words == False:
-            self.takeName("could you please repeat that?")
-            print("could you please repeat that?")
-
+    # this asks the user what they want to do
     def actions(self):
-        self.waiter.say("what would you like to do")
-        print("what would you like to do")
+        print("Here are your options")
+        self.waiter.say("here are your options")
 
-        self.waiter.say("Order food")
-        print("Order food")
-
-        self.waiter.say("View previous orders")
-        print("View previous orders")
-
-        self.waiter.say("See the menu")
-        print("See the menu")
-
-        self.waiter.say("Exit the system")
-        print("Exit the system")
+        choices = ["Order food", "View previous orders",
+                   "See the menu", "Exit the system"]
+        for i in choices:
+            print(i)
+            self.waiter.say(i)
 
         action = self.waiter.listen("What do you want to do? ")
-        action.lower()
-        answers = ["exit", "order food",
-                   "view previous orders", "see the menu"]
-        actionCon = process.extract(action, answers)
-        for (match, confidence) in actionCon:
-            if match == 'exit':
-                print('test')
-            else:
-                self.actions()
 
-    def Exit(self):
-        return
+        results = process.extract(action, choices)
+
+        for (match, confidence) in results:
+
+            if match == "Exit the system" and confidence >= 60:
+                print("exit!!!")
+                return
+            elif match == "View previous orders" and confidence >= 60:
+                print("viewing prev orders")
+            elif match == "See the menu" and confidence >= 60:
+                print("See the menu")
+            elif match == "Order food" and confidence >= 60:
+                print("Order food")
+            else:
+                print("sorry did not understand")
+                self.actions()
 
 
 if __name__ == "__main__":

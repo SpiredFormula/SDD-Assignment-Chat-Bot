@@ -3,5 +3,6 @@
         "fuzzywuzzy",
         "pyttsx",
         "spacy"
-    ]
+    ],
+    "python.pythonPath": "C:\\Program Files\\Python310\\python.exe"
 }
