@@ -1,13 +1,13 @@
 import pyttsx3
 import speech_recognition as sr
 
+
 class Avatar:
 
     def __init__(self, name="Elsa"):  # constructor method
         self.name = name
         self.initVoice()
         self.initSR()
-        
 
     def initSR(self):
         self.sample_rate = 48000
@@ -33,12 +33,12 @@ class Avatar:
         if self.useSR:
             try:
                 with sr.Microphone(sample_rate=self.sample_rate, chunk_size=self.chunk_size) as source:
-                    
+
                     self.r.adjust_for_ambient_noise(source)
                     self.say(prompt)
                     audio = self.r.listen(source)
                 try:
-                    
+
                     words = self.r.recognize_google(audio)
                 except sr.UnknownValueError:
                     self.say("Could not understand what you said.")
@@ -56,20 +56,17 @@ class Avatar:
         return words
 
     def introduce(self):
-        self.say(f"Hello. My name is {self.name} and i'll be serving you today")
-
-
+        self.say(
+            f"Hello. My name is {self.name} and i'll be serving you today")
 
 
 def main():
     teacher = Avatar("Barb")
     teacher.say("How are you today?")
 
-
     word = "hello"
     for letter in word:
         teacher.say(letter)
-
 
     words = teacher.listen()
     teacher.say(words)

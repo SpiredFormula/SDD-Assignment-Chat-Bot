@@ -44,5 +44,5 @@ class CustomerClass:
     def askName(self, ask):
         self.customerName = self.waiter.listen(ask)
         self.customerName = self.getName(self.customerName)
-        print(self.customerName)
+
         return self.customerName

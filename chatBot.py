@@ -6,14 +6,17 @@ import json
 from fuzzywuzzy import process
 import spacy
 from Customer import CustomerClass
-
+from viewPrevOrders import ViewPrev
 
 # defining the class
+
+
 class Chat_Bot:
     def __init__(self):
         self.waiter = Avatar()
         self.Customer = CustomerClass()
         self.previouscustomers = self.Customer.loadPeople()
+        self.orders = ViewPrev()
 
     # Greets the user
     def greet(self):
@@ -68,9 +71,11 @@ class Chat_Bot:
 
             if match == "Exit the system" and confidence >= 60:
                 print("exit!!!")
-                return
+                quit()
             elif match == "View previous orders" and confidence >= 60:
                 print("viewing prev orders")
+                self.orders.loadOrders(self.customerName)
+                self.actions()
             elif match == "See the menu" and confidence >= 60:
                 print("See the menu")
             elif match == "Order food" and confidence >= 60:
