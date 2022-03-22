@@ -17,9 +17,7 @@ class CustomerClass:
                 data = p.read()
                 self.people = json.loads(data)
                 self.peopleNames = list(self.people.keys())
-                print(self.peopleNames)
                 self.peopleNames = ' '.join(self.peopleNames)
-                print(self.peopleNames)
                 return self.people
         except:
             print("error")

@@ -77,7 +77,7 @@ orders, including
     -the dishes ordered and their prices
     -Total order value
 ============================================================
-
+DONE
 
 
 
@@ -91,7 +91,7 @@ description of the menus for 3 different courses
      courses
     -You must include a price for each dish in that course
 ============================================================
-
+DONE
 
 
 

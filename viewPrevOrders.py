@@ -20,9 +20,11 @@ class ViewPrev:
                     ordercontent = self.ordernum[order]
                     ordercontentlist = list(self.ordernum[order].keys())
                     print(f'Order {order}:')
+                    waiter.say('Order {order}')
                     for contentorder in ordercontentlist:
                         orderprice = ordercontent[contentorder]
                         print(f'- {contentorder}: {orderprice}')
+                        waiter.say(f'{contentorder}, {orderprice}')
                 return
         except:
             print("error")

@@ -9,6 +9,16 @@ class Menu:
         self.loadMenu()
         self.waiter = Avatar()
 
+    def loadcourses(self):
+        try:
+            with open("Json\Menu.json") as n:
+                data2 = n.read()
+                c = json.loads(data2)
+                d = list(c.keys())
+                return d
+        except:
+            print('error')
+
     def loadMenu(self):
         try:
             with open("Json\Menu.json") as m:
@@ -20,7 +30,7 @@ class Menu:
             print(self.menu)
 
     def showCourse(self, course):
-        print(f"Course: {course.title()} test")
+        print(f"Course: {course.title()}")
         self.waiter.say(f"The dishes for the {course} course are.")
 
     def showDishes(self, course):
@@ -48,9 +58,14 @@ class Menu:
 
 
 def main():
+
     m = Menu()
+    '''
     m.showMenu()
     m.showMenu("starter")
+    '''
+    test = m.loadcourses()
+    print(test)
 
 
 if __name__ == "__main__":
