@@ -27,13 +27,10 @@ class OrderFood:
         # 1. Read file contents
         with open(filename, "r") as f:
             data = json.load(f)
-            print("----------------")
-            print(data)
 
         # 2. Update json object
         preorders = data[name]
         preorders[ordernum] = order
-        print(data)
 
         # 3. Write json file
         with open(filename, "w") as fi:
@@ -51,7 +48,6 @@ class OrderFood:
                 ordered.append(match)
             else:
                 pass
-        print(ordered)
         try:
             with open("Json\People.json") as p:
                 data = p.read()
@@ -59,33 +55,25 @@ class OrderFood:
 
                 ordernum = people[name]
                 ordernumlist = list(people[name].keys())
-                print(ordernumlist)
                 ordernumber = str(len(ordernumlist) + 1)
-            print(ordernumber)
+
         except:
             ordernumber = "1"
 
         with open("Json\Menu.json") as d:
             data = d.read()
             menu = json.loads(data)
-            print(menu)
         courses = self.m.loadcourses()
         orderDictionary = {}
 
         for course in courses:
             currentcourse = menu[course]
-            print("------------------")
-            print(currentcourse)
             for orders in ordered:
                 if orders in currentcourse:
                     price = currentcourse[orders]
                     orderDictionary[orders] = price
-                    print(orderDictionary)
                 else:
-                    print("pass")
-        print('''----------
-        done!''')
-        print(orderDictionary)
+                    pass
 
         self.addOrder(name, orderDictionary, ordernumber)
 
