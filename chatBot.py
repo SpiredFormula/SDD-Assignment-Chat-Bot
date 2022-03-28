@@ -88,36 +88,48 @@ class Chat_Bot:
 
             # Shows the user the menu
             elif match == "See the menu" and confidence >= 60:
-                choices2 = ['see the full menu',
-                            'see a specific course']
-                print("would you like to see the full menu of a specific course?")
-                action2 = self.waiter.listen(
-                    "Would you like to see the full menu or a specific course?")
-                results = process.extract(action2, choices2)
-                for (match, confidence) in results:
-
-                    # Shows the user the full menu
-                    if match == 'see the full menu' and confidence >= 60:
-                        self.viewmenu.showMenu()
-                        self.actions()
-
-                    # Asks the user what course they want to see
-                    elif match == 'see a specific course' and confidence >= 60:
-                        courses = self.viewmenu.loadcourses()
-                        for i in courses:
-                            print(i)
-                            self.waiter.say(i)
-                        ans = self.waiter.listen(
-                            "what course do you want to see?")
-                        self.viewmenu.showMenu(ans)
+                self.seeMenu()
+                self.actions()
 
             # Ask the use what they want to order
             elif match == "Order food" and confidence >= 60:
-                self.foodorder.order()
+                choices3 = ['yes', 'no']
+                actions3 = self.waiter.listen(
+                    "would you like to see the menu?")
+                results = process.extract(actions3, choices3)
+                for (match, confidence) in results:
+                    if match == "yes" and confidence >= 60:
+                        self.seeMenu()
+                        self.foodorder.order(self.customerName)
+                    elif match == "no" and confidence >= 60:
+                        self.foodorder.order(self.customerName)
+
                 # print this if it does not undersand the user
             else:
                 print("sorry did not understand")
                 self.actions()
+
+    def seeMenu(self):
+        choices2 = ['see the full menu',
+                    'see a specific course']
+        action2 = self.waiter.listen(
+            "Would you like to see the full menu or a specific course?")
+        results = process.extract(action2, choices2)
+        for (match, confidence) in results:
+
+            # Shows the user the full menu
+            if match == 'see the full menu' and confidence >= 60:
+                self.viewmenu.showMenu()
+                self.actions()
+
+                # Asks the user what course they want to see
+            elif match == 'see a specific course' and confidence >= 60:
+                courses = self.viewmenu.loadcourses()
+                for i in courses:
+                    print(i)
+                    self.waiter.say(i)
+                ans = self.waiter.listen("what course do you want to see?")
+                self.viewmenu.showMenu(ans)
 
 
 if __name__ == "__main__":

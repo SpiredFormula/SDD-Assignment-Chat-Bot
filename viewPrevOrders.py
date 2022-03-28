@@ -1,10 +1,10 @@
-import Avatar
+from Avatar import Avatar
 import json
 
 
 class ViewPrev:
     def __init__(self):
-        self.waiter = Avatar
+        self.waiter = Avatar()
 
     def loadOrders(self, name):
 
@@ -20,11 +20,11 @@ class ViewPrev:
                     ordercontent = self.ordernum[order]
                     ordercontentlist = list(self.ordernum[order].keys())
                     print(f'Order {order}:')
-                    waiter.say('Order {order}')
+                    self.waiter.say(f'Order {order}')
                     for contentorder in ordercontentlist:
                         orderprice = ordercontent[contentorder]
                         print(f'- {contentorder}: {orderprice}')
-                        waiter.say(f'{contentorder}, {orderprice}')
+                        self.waiter.say(f'{contentorder}, {orderprice}')
                 return
         except:
             print("error")
