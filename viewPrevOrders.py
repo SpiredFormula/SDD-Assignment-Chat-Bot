@@ -27,7 +27,8 @@ class ViewPrev:
                         self.waiter.say(f'{contentorder}, {orderprice}')
                 return
         except:
-            print("error")
+            print("You have no previous orders")
+            self.waiter.say("You have no previous orders")
 
 
 if __name__ == "__main__":

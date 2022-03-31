@@ -13,7 +13,7 @@ class Avatar:
         self.sample_rate = 48000
         self.chunk_size = 2048
         self.r = sr.Recognizer()
-        self.useSR = False
+        self.useSR = True
 
     def initVoice(self):
         self.__engine = pyttsx3.init()
@@ -36,7 +36,7 @@ class Avatar:
 
                     self.r.adjust_for_ambient_noise(source)
                     self.say(prompt)
-                    audio = self.r.listen(source)
+                    audio = self.r.listen(source, timeout=100)
                 try:
 
                     words = self.r.recognize_google(audio)
@@ -46,7 +46,7 @@ class Avatar:
                 except sr.RequestError as e:
                     self.say("Could not request results; {0}".format(e))
                     words = False
-                    self.useSR = False
+
             except:
                 self.say(prompt)
                 words = input(f"{prompt}")

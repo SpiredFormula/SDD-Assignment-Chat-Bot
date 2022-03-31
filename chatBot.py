@@ -27,7 +27,7 @@ class Chat_Bot:
         self.waiter.say(
             f"Hello my name is {self.waiter.name} and I'll be serving you today")
 
-        self.orderHistory("Before we start may i take your name?")
+        self.orderHistory("Before we start may i take your name? ")
 
     # This function will check to see if the user had ordered before
     def orderHistory(self, ask):
@@ -41,73 +41,107 @@ class Chat_Bot:
             self.waiter.say(
                 f"I can see you have ordered with us before.  Welcome back {self.customerName}")
             self.orderedBefore = True
-            self.actions()
+            self.actions(self.customerName)
 
         # if it can not undersand the user
-        if self.customerName == False:
+        elif self.customerName == False:
             print("Let's try that again.  What is your name? ")
             self.orderHistory("let's try that again What is Your name")
 
         # if it is their first time
         else:
             print(
-                f"I can see this is your first time ordering with us. welcome {self.customerName}")
+                f"I can s ee this is your first time ordering with us. welcome {self.customerName}")
             self.waiter.say(
                 f"I can see this is your first time ordering with us. welcome {self.customerName}")
-            self.actions()
+            self.actions(self.customerName)
             self.orderedBefore = False
 
     # This asks the user what they want to do
-    def actions(self):
-        print("Here are your options")
+    def actions(self, name):
+        self.customerName = name
+        print("----------------------------------------------------------")
+        print("Here are your options:")
         self.waiter.say("here are your options")
-
+        print("----------------------------------------------------------")
         choices = ["Order food", "View previous orders",
                    "See the menu", "Exit the system"]
         for i in choices:
             print(i)
             self.waiter.say(i)
-
+        print("----------------------------------------------------------")
         # Asks the user what they want to do
         action = self.waiter.listen("What do you want to do? ")
-
+        print(f'- {action}')
+        print("----------------------------------------------------------")
+########################################################################################
+        # if it doesn't understand the user restart the function
+########################################################################################
+        if action == False:
+            print('sorry could not understand')
+            self.actions(self.customerName)
         results = process.extract(action, choices)
 
         for (match, confidence) in results:
-            # If they want to exit the system exit the system duh...
+            ########################################################################################
+            # If they want to exit the system exit the system
+            ########################################################################################
             if match == "Exit the system" and confidence >= 60:
-                self.waiter.say(
-                    "So sad to see you go lol just kidding i'm a robot and i don't have feelings eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee lol among us xd poopy piss lol among us funny joke bye")
-                quit()
-
+                ans = self.waiter.listen(
+                    "Are you sure you want to exit? (yes or no): ")
+                yn = ['yes', 'no']
+                r = process.extract(ans, yn)
+                for (match, confidence) in r:
+                    if match == 'yes' and confidence >= 70:
+                        print(
+                            "So sad to see you go. Thank you for choosing us, we hope we will see you again")
+                        self.waiter.say(
+                            "So sad to see you go. Thank you for choosing us, we hope we will see you again")
+                        quit()
+                    elif match == "no" and confidence >= 70:
+                        self.actions(self.customerName)
+########################################################################################
             # Views previous orders by grabbing it form the json file People.json
+########################################################################################
             elif match == "View previous orders" and confidence >= 60:
-                print("viewing prev orders")
+                print("Viewing previous orders........")
+                self.waiter.say("viewing previous orders")
                 self.orders.loadOrders(self.customerName)
-                self.actions()
-
+                self.actions(self.customerName)
+########################################################################################
             # Shows the user the menu
+########################################################################################
             elif match == "See the menu" and confidence >= 60:
                 self.seeMenu()
-                self.actions()
-
+                self.actions(self.customerName)
+########################################################################################
             # Ask the use what they want to order
+########################################################################################
             elif match == "Order food" and confidence >= 60:
                 choices3 = ['yes', 'no']
                 actions3 = self.waiter.listen(
-                    "would you like to see the menu?")
+                    "would you like to see the menu? (yes or no): ")
+                if actions3 == False:
+                    self.actions(self.customerName)
                 results = process.extract(actions3, choices3)
                 for (match, confidence) in results:
                     if match == "yes" and confidence >= 60:
                         self.seeMenu()
                         self.foodorder.order(self.customerName)
+                        self.actions(self.customerName)
                     elif match == "no" and confidence >= 60:
                         self.foodorder.order(self.customerName)
+                        self.actions(self.customerName)
+                    elif match == False:
+                        print("sorry could not understand what you said")
+                        self.actions(self.customerName)
 
-                # print this if it does not undersand the user
+########################################################################################
+            # if the input cannot be recognized
+########################################################################################
             else:
                 print("sorry did not understand")
-                self.actions()
+                self.actions(self.customerName)
 
     def seeMenu(self):
         choices2 = ['see the full menu',
@@ -120,7 +154,6 @@ class Chat_Bot:
             # Shows the user the full menu
             if match == 'see the full menu' and confidence >= 60:
                 self.viewmenu.showMenu()
-                self.actions()
 
                 # Asks the user what course they want to see
             elif match == 'see a specific course' and confidence >= 60:

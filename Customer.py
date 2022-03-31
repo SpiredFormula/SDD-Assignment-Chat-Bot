@@ -41,6 +41,10 @@ class CustomerClass:
     # Asks the user for their name and will run the getName function and return the result
     def askName(self, ask):
         self.customerName = self.waiter.listen(ask)
-        self.customerName = self.getName(self.customerName)
+        if self.customerName == False:
+            return self.customerName
+        else:
 
-        return self.customerName
+            self.customerName = self.getName(self.customerName)
+
+            return self.customerName
