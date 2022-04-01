@@ -1,3 +1,10 @@
+##########################################################################
+##########################################################################
+#                           RUN THIS FIRST                               #
+##########################################################################
+##########################################################################
+
+
 # Importing all the packages required
 from Menu import Menu
 from Avatar import Avatar
@@ -22,8 +29,7 @@ class Chat_Bot:
     # Greets the user
 
     def greet(self):
-        print(
-            f"Hello my name is {self.waiter.name} and I'll be serving you today")
+
         self.waiter.say(
             f"Hello my name is {self.waiter.name} and I'll be serving you today")
 
@@ -51,7 +57,7 @@ class Chat_Bot:
         # if it is their first time
         else:
             print(
-                f"I can s ee this is your first time ordering with us. welcome {self.customerName}")
+                f"I can see this is your first time ordering with us. welcome {self.customerName}")
             self.waiter.say(
                 f"I can see this is your first time ordering with us. welcome {self.customerName}")
             self.actions(self.customerName)
@@ -61,13 +67,12 @@ class Chat_Bot:
     def actions(self, name):
         self.customerName = name
         print("----------------------------------------------------------")
-        print("Here are your options:")
-        self.waiter.say("here are your options")
+        self.waiter.say("Here are your options")
         print("----------------------------------------------------------")
         choices = ["Order food", "View previous orders",
                    "See the menu", "Exit the system"]
         for i in choices:
-            print(i)
+
             self.waiter.say(i)
         print("----------------------------------------------------------")
         # Asks the user what they want to do
@@ -77,7 +82,7 @@ class Chat_Bot:
 ########################################################################################
         # if it doesn't understand the user restart the function
 ########################################################################################
-        if action == False:
+        if action == False or action == '':
             print('sorry could not understand')
             self.actions(self.customerName)
         results = process.extract(action, choices)
@@ -121,7 +126,7 @@ class Chat_Bot:
                 choices3 = ['yes', 'no']
                 actions3 = self.waiter.listen(
                     "would you like to see the menu? (yes or no): ")
-                if actions3 == False:
+                if actions3 == False or actions3 == '':
                     self.actions(self.customerName)
                 results = process.extract(actions3, choices3)
                 for (match, confidence) in results:
@@ -132,7 +137,7 @@ class Chat_Bot:
                     elif match == "no" and confidence >= 60:
                         self.foodorder.order(self.customerName)
                         self.actions(self.customerName)
-                    elif match == False:
+                    else:
                         print("sorry could not understand what you said")
                         self.actions(self.customerName)
 
@@ -140,7 +145,7 @@ class Chat_Bot:
             # if the input cannot be recognized
 ########################################################################################
             else:
-                print("sorry did not understand")
+                self.waiter.say("Sorry did not understand")
                 self.actions(self.customerName)
 
     def seeMenu(self):
@@ -148,6 +153,10 @@ class Chat_Bot:
                     'see a specific course']
         action2 = self.waiter.listen(
             "Would you like to see the full menu or a specific course?")
+        if action2 == False or action2 == '':
+
+            self.waiter.say("Lets try that again")
+            self.seeMenu()
         results = process.extract(action2, choices2)
         for (match, confidence) in results:
 
@@ -158,11 +167,25 @@ class Chat_Bot:
                 # Asks the user what course they want to see
             elif match == 'see a specific course' and confidence >= 60:
                 courses = self.viewmenu.loadcourses()
+                coursechoices = []
+                self.waiter.say("Here are the courses:")
                 for i in courses:
-                    print(i)
-                    self.waiter.say(i)
+                    self.waiter.say(f"- {i}")
+                    coursechoices.append(i)
                 ans = self.waiter.listen("what course do you want to see?")
-                self.viewmenu.showMenu(ans)
+                if ans == False or ans == '':
+                    self.waiter.say("Let's try that again")
+                    self.seeMenu()
+                results = process.extract(ans, coursechoices)
+                for (match, confidence) in results:
+                    if match in coursechoices and confidence >= 70:
+                        self.viewmenu.showMenu(ans)
+                    else:
+                        self.waiter.say("Lets try that again")
+                        self.seeMenu()
+            else:
+                self.waiter.say("Lets try that again")
+                self.actions(self.customerName)
 
 
 if __name__ == "__main__":

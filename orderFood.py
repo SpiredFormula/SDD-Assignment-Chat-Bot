@@ -46,7 +46,7 @@ class OrderFood:
             "Ask to exit order at anytime to cancel. Ask to see the menu to see the menu again")
         action = self.waiter.listen(
             "What do you want to order? you need at least 3 items: ")
-        if action == False:
+        if action == False or responce == '':
             self.waiter.say("lets try that again")
             self.order(name)
         results = process.extract(action, choices)
@@ -124,7 +124,7 @@ class OrderFood:
     def Q1(self, name, orderDictionary, ordernumber):
         responce = self.waiter.listen(
             "Is this what you ordered? (yes or no): ")
-        if responce == False:
+        if responce == False or responce == '':
             self.waiter.say("lets try that again")
             self.Q1(name, orderDictionary, ordernumber)
         choice = ['yes', 'no']
@@ -149,7 +149,7 @@ class OrderFood:
     def Q2(self, name):
         responce2 = self.waiter.listen(
             "Ok do you wish to order again? (yes or no): ")
-        if responce2 == False:
+        if responce2 == False or responce2 == '':
             self.waiter.say("lets try that again")
             self.Q2(name)
         choice2 = ['yes', 'no', 'see the menu']
