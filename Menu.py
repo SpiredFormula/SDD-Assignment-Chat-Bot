@@ -30,8 +30,8 @@ class Menu:
             print(self.menu)
 
     def showCourse(self, course):
+        self.waiter.say(f"The dishes for the {course} course are. ")
         print(f"Course: {course.title()}")
-        self.waiter.say(f"The dishes for the {course} course are.")
 
     def showDishes(self, course):
 
@@ -41,7 +41,7 @@ class Menu:
             price = dishes[dish]
 
             desc = f"{dish.title():10s} ${price:3.2f}"
-            print(desc)
+
             self.waiter.say(desc)
 
     def showMenu(self, menuCourse=None):

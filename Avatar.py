@@ -4,7 +4,7 @@ import speech_recognition as sr
 
 class Avatar:
 
-    def __init__(self, name="Mr robot"):  # constructor method
+    def __init__(self, name="Kate"):  # constructor method
         self.name = name
         self.initVoice()
         self.initSR()
@@ -13,7 +13,7 @@ class Avatar:
         self.sample_rate = 48000
         self.chunk_size = 2048
         self.r = sr.Recognizer()
-        self.useSR = False
+        self.useSR = True
 
     def initVoice(self):
         self.__engine = pyttsx3.init()
@@ -30,15 +30,14 @@ class Avatar:
         self.__engine.runAndWait()
 
     def listen(self, prompt="I am listening, please speak:"):
-        words = ' '
+        words = ''
         if self.useSR:
             try:
                 with sr.Microphone(sample_rate=self.sample_rate, chunk_size=self.chunk_size) as source:
 
                     self.r.adjust_for_ambient_noise(source)
-                    print(prompt)
                     self.say(prompt)
-                    audio = self.r.listen(source, timeout=100)
+                    audio = self.r.listen(source)
                 try:
 
                     words = self.r.recognize_google(audio)
@@ -50,11 +49,11 @@ class Avatar:
                     words = False
 
             except:
-                print(prompt)
+
                 self.say('Type your answer here: ')
                 words = input(f"{prompt}")
         else:
-            print(prompt)
+
             self.say(prompt)
             words = input('Type your answer here: ')
         return words

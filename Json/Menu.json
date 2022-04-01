@@ -2,16 +2,22 @@
     "starter": {
         "soup": 4.50,
         "prawns": 6.30,
-        "bread": 0.50
+        "bread": 0.50,
+        "rice": 1.00
     },
     "main": {
         "steak": 19.00,
-        "lasagne": 14.50,
-        "chicken": 13.95
+        "lamb": 14.50,
+        "chicken": 10.50,
+        "pasta": 8.00
     },
     "dessert": {
         "cake": 6.70,
         "ice cream": 6.30,
         "jelly": 3.90
+    },
+    "drinks": {
+        "water": 10.75
     }
+    
 }

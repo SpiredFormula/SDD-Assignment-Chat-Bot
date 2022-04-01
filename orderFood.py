@@ -35,28 +35,29 @@ class OrderFood:
         # 3. Write json file
         with open(filename, "w") as fi:
             json.dump(data, fi)
+        self.waiter.say(
+            f"Order has been added to your profile {name}. You can now see it by asking me for your previous orders")
 
     def order(self, name):
         choices = self.loadItems()
         choices.append("exit order")
         choices.append("see the menu")
-        print(choices)
-        print("Ask to exit order at anytime to cancel. Ask to see the menu to see the menu again")
         self.waiter.say(
             "Ask to exit order at anytime to cancel. Ask to see the menu to see the menu again")
+        self.waiter.say("Duplicate items are also not allowed!")
         action = self.waiter.listen(
             "What do you want to order? you need at least 3 items: ")
-        if action == False or responce == '':
+        if action == False or action == '':
             self.waiter.say("lets try that again")
             self.order(name)
         results = process.extract(action, choices)
         ordered = []
 
         for(match, confidence) in results:
-            print(f'{match}: {confidence}')
-            if match != 'exit order' and match != "see the menu" and confidence >= 80:
+            if match != 'exit order' and match != "see the menu" and confidence >= 60:
                 ordered.append(match)
-            elif match == "exit order" and confidence >= 70:
+            elif match == "exit order" and confidence >= 60:
+                self.waiter.say("Cancelling order.....")
                 from chatBot import Chat_Bot
                 chat = Chat_Bot()
                 chat.actions(name)
@@ -66,9 +67,8 @@ class OrderFood:
                 chat.seeMenu()
                 self.order(name)
         orderlength = len(ordered)
-        print(orderlength)
+
         if orderlength <= 2:
-            print("sorry your order needs to be at least 3 or more items")
             self.waiter.say(
                 "sorry your order needs to be at least 3 or more items")
             self.order(name)
@@ -105,20 +105,16 @@ class OrderFood:
                 else:
                     pass
         num = 0
+        print(totalprice)
         for t in totalprice:
-            total = num + t
-            num = total
+            num = num + t
 
-        print("This is your final order:")
         self.waiter.say("This is your final order:")
         for finalorder in orderDictionary:
-            print(f"{finalorder}: ${str(orderDictionary[finalorder])}")
             self.waiter.say(
-                f"{finalorder}: ${str(orderDictionary[finalorder])} and cents")
-        print(f"Order Number: {ordernumber}")
+                f"{finalorder}: ${str(orderDictionary[finalorder])}")
         self.waiter.say(f"Order Number: {ordernumber}")
-        print(f'Total Price: {num}')
-        self.waiter.say(f'Total Price: ${num} and cents')
+        self.waiter.say(f'Total Price: ${num}')
         self.Q1(name, orderDictionary, ordernumber)
 
     def Q1(self, name, orderDictionary, ordernumber):
